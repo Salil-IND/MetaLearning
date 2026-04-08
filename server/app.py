@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from pydantic import BaseModel, Field
 from typing import Dict, Any, Optional
 from env.environment import EmailTriageEnv
@@ -22,8 +22,15 @@ class StepRequest(BaseModel):
     action: Dict[str, Any] = Field(default_factory=dict)
 
 @app.post("/reset")
-async def reset_env(req: Optional[ResetRequest] = None):
-    task_name = req.task if req else "easy"
+async def reset_env(request: Request):
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    if not isinstance(body, dict):
+        body = {}
+        
+    task_name = body.get("task", "easy")
     obs, info = await env.reset(task_name)
     return {
         "observation": obs.model_dump(),
@@ -31,8 +38,16 @@ async def reset_env(req: Optional[ResetRequest] = None):
     }
 
 @app.post("/step")
-async def step_env(req: StepRequest):
-    obs, reward, done, info = await env.step(req.action)
+async def step_env(request: Request):
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    if not isinstance(body, dict):
+        body = {}
+        
+    action = body.get("action", {})
+    obs, reward, done, info = await env.step(action)
     return {
         "observation": obs.model_dump() if obs else None,
         "reward": float(reward),
