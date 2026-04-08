@@ -1,0 +1,8 @@
+name: email-triage-env
+version: 1.0.0
+description: "Email triage environment evaluating an agent's capability to process inbox efficiently."
+entrypoint: "server/app.py"
+tasks:
+  - easy
+  - medium
+  - hard
