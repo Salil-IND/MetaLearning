@@ -53,7 +53,10 @@ class MockOpenAI:
 
 try:
     from openai import OpenAI
-    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY", "default-key"), base_url=os.getenv("OPENAI_BASE_URL", None))
+    client = OpenAI(
+    api_key=os.getenv("HF_TOKEN"),
+    base_url=os.getenv("API_BASE_URL")
+)
 except ImportError:
     client = MockOpenAI(api_key="mock")
 
