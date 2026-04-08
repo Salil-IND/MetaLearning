@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 from env.environment import EmailTriageEnv
 
 app = FastAPI()
@@ -22,8 +22,9 @@ class StepRequest(BaseModel):
     action: Dict[str, Any] = Field(default_factory=dict)
 
 @app.post("/reset")
-async def reset_env(req: ResetRequest):
-    obs, info = await env.reset(req.task)
+async def reset_env(req: Optional[ResetRequest] = None):
+    task_name = req.task if req else "easy"
+    obs, info = await env.reset(task_name)
     return {
         "observation": obs.model_dump(),
         "info": info
