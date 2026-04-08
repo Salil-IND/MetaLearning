@@ -6,6 +6,15 @@ from env.environment import EmailTriageEnv
 app = FastAPI()
 env = EmailTriageEnv()
 
+@app.get("/")
+async def root():
+    return {
+        "name": "Email Triage OpenEnv",
+        "status": "running",
+        "instructions": "Use POST /reset and POST /step to interact with this environment."
+    }
+
+
 class ResetRequest(BaseModel):
     task: str = "easy"
 

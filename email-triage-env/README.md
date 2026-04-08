@@ -1,3 +1,13 @@
+---
+title: Email Triage OpenEnv
+emoji: 📧
+colorFrom: blue
+colorTo: green
+sdk: docker
+pinned: false
+app_port: 7860
+---
+
 # Email Triage OpenEnv
 
 A real-world OpenEnv simulator that tests an agent's ability to efficiently manage an inbox through replying, forwarding, archiving, and identifying spam with constraints and SLA tracking.
